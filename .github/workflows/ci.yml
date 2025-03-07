@@ -16,19 +16,17 @@ jobs:
     strategy:
       matrix:
         RUSTFLAGS: ["--deny warnings", "--deny warnings --cfg tokio_unstable", "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"]
-        TARGET: ["", "--target i686-unknown-linux-gnu"] # An arbitrary 32-bit target
+        TARGET: ["", "--target wasm32-unknown-unknown"] # An arbitrary 32-bit target
+        exclude:
+          - RUSTFLAGS: "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"
+          - TARGET: "--target wasm32-unknown-unknown"
 
     steps:
     - uses: actions/checkout@v4
     - name: Rustup update
-      run: rustup update && rustup list
+      run: rustup update && rustup target list
     - name: Show cargo version
       run: cargo --version
-    - name: Add toolchain if needed
-      run: |
-        if [[ -n "${{ matrix.TARGET }}" ]]; then
-          rustup add target i686-unknown-linux-gnu
-        fi
     - name: rust build caching
       uses: Swatinem/rust-cache@v2
       with:
