@@ -1,0 +1,15 @@
+[package]
+name = "tokio_util_watchdog"
+version = "0.1.0"
+authors = ["beck.ct@gmail.com"]
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+rust-version = "1.74"
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)'] }
+
+[dependencies]
+tokio = { version = "1.43.0", features = ["rt", "time"] }
+tracing = { version = "0.1" }
