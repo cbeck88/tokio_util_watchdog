@@ -6,6 +6,14 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 rust-version = "1.74"
+description = "A watchdog utility for tokio runtimes"
+categories = ["asynchronous", "development-tools::debugging"]
+keywords = [
+  "async",
+  "tokio",
+  "utility",
+  "watchdog",
+]
 
 [lints.rust]
 unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)'] }
