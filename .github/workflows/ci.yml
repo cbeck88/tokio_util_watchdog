@@ -1,0 +1,54 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+
+jobs:
+  # build rust
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        RUSTFLAGS: ["--deny warnings", "--deny warnings --cfg tokio_unstable", "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"]
+        TARGET: ["", "--target i686-unknown-linux-gnu"] # An arbitrary 32-bit target
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Rustup update
+      run: cd rust && rustup update
+    - name: Show cargo version
+      run: cargo --version
+    - name: rust build caching
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: . -> target
+        save-if: ${{ github.ref == 'refs/heads/main' }}
+    - name: Build Rust
+      env:
+        RUSTFLAGS: ${{ matrix.RUSTFLAGS }}
+      run: cargo build --verbose ${{ matrix.TARGET }}
+
+  # lint rust
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Rustup update
+      run: cd rust && rustup update
+    - name: Show cargo version
+      run: cargo --version
+    - name: rust build caching
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: . -> target
+        save-if: ${{ github.ref == 'refs/heads/main' }}
+    - name: Format
+      run: cargo fmt -- --check
+    - name: Clippy
+      run: cargo clippy --all --all-features -- -D warnings
