@@ -2,8 +2,8 @@
 
 A watchdog utility for detecting deadlocks in tokio runtimes.
 
-[![Crates.io](https://img.shields.io/crates/v/conf?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
-[![Crates.io](https://img.shields.io/crates/d/conf?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
+[![Crates.io](https://img.shields.io/crates/v/tokio_util_watchdog?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
+[![Crates.io](https://img.shields.io/crates/d/tokio_util_watchdog?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](LICENSE-APACHE)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE-MIT)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/cbeck88/tokio_util_watchdog/ci.yml?branch=main&style=flat-square)](https://github.com/cbeck88/tokio_util_watchdog/actions/workflows/ci.yml?query=branch%3Amain)
@@ -24,7 +24,7 @@ situation:
   for those heartbeats.
 * If heartbeats are not detected for a few seconds (configurable), panic.
 * Before we panic, try to collect and log [`tokio::RuntimeMetrics`](https://docs.rs/tokio/latest/tokio/runtime/struct.RuntimeMetrics.html) for this runtime for a few seconds (configurable).
-* If `cfg(tokio_unstable)` and `cfg(tokio_taskdump)` were used, also try to collect and log a task dump for a few seconds.
+* If `cfg(tokio_unstable)` and `cfg(tokio_taskdump)` were used, also try to collect and log a [task dump](https://docs.rs/tokio/latest/tokio/runtime/dump/struct.Dump.html) for a few seconds.
 
 The assumption here is that when the panic occurs, your deployment infrastructure will detect that this happened
 and restart the process. Hopefully the process will recover and not immediately deadlock again. And meanwhile, you
@@ -43,7 +43,7 @@ and panicking (configurable).
 1. Add `tokio_util_watchdog = "0.1"` to your `Cargo.toml`.
 1. In `main.rs` somewhere, add lines such as:
 
-```
+```rust
 use tokio_util_watchdog::Watchdog;
 
 ...
@@ -58,7 +58,7 @@ async fn main() {
 }
 ```
 
-See the builder documentation for configuration options. The watchdog is disarmed gracefully if it is dropped.
+See the [builder documentation](https://docs.rs/tokio_util_watchdog/latest/tokio_util_watchdog/struct.Builder.html) for configuration options. The watchdog is disarmed gracefully if it is dropped.
 
 **Optional:**
 
