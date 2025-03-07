@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Rustup update
-      run: cd rust && rustup update
+      run: rustup update
     - name: Show cargo version
       run: cargo --version
     - name: rust build caching
@@ -40,7 +40,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Rustup update
-      run: cd rust && rustup update
+      run: rustup update
     - name: Show cargo version
       run: cargo --version
     - name: rust build caching
