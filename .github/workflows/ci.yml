@@ -19,7 +19,7 @@ jobs:
         TARGET: ["", "--target wasm32-unknown-unknown"] # An arbitrary 32-bit target
         exclude:
           - RUSTFLAGS: "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"
-          - TARGET: "--target wasm32-unknown-unknown"
+            TARGET: "--target wasm32-unknown-unknown"
 
     steps:
     - uses: actions/checkout@v4
