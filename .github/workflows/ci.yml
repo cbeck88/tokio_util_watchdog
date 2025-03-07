@@ -15,17 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        RUSTFLAGS: ["--deny warnings", "--deny warnings --cfg tokio_unstable", "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"]
+        RUSTFLAGS: ["--deny warnings", "--cfg tokio_unstable --deny warnings", "--cfg tokio_unstable --cfg tokio_taskdump --deny warnings"]
         TARGET: ["", "--target wasm32-unknown-unknown"] # An arbitrary 32-bit target
-        exclude:
-          - RUSTFLAGS: "--deny warnings --cfg tokio_unstable --cfg tokio_taskdump"
+        exclude: # This doesn't work because tokio_taskdump doesn't support wasm32
+          - RUSTFLAGS: "--cfg tokio_unstable --cfg tokio_taskdump --deny warnings"
             TARGET: "--target wasm32-unknown-unknown"
 
     steps:
     - uses: actions/checkout@v4
     - name: Rustup update
       run: rustup update && rustup target list
-    - name: Install wasm32 toolchain
+    - name: Install wasm32 stdlib
       run: rustup target add wasm32-unknown-unknown
     - name: Show cargo version
       run: cargo --version
