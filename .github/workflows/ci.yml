@@ -25,6 +25,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Rustup update
       run: rustup update && rustup target list
+    - name: Install wasm32 toolchain
+      run: rustup target add wasm32-unknown-unknown
     - name: Show cargo version
       run: cargo --version
     - name: rust build caching
