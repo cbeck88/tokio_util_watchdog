@@ -1,5 +1,17 @@
 # tokio_util_watchdog
 
+A watchdog utility for detecting deadlocks in tokio runtimes.
+
+[![Crates.io](https://img.shields.io/crates/v/conf?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
+[![Crates.io](https://img.shields.io/crates/d/conf?style=flat-square)](https://crates.io/crates/tokio_util_watchdog)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](LICENSE-APACHE)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE-MIT)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/cbeck88/tokio_util_watchdog/ci.yml?branch=main&style=flat-square)](https://github.com/cbeck88/tokio_util_watchdog/actions/workflows/ci.yml?query=branch%3Amain)
+
+[API Docs](https://docs.rs/tokio_util_watchdog/latest/tokio_util_watchdog/)
+
+---
+
 If we get a tokio deadlock, i.e. all worker threads get blocked and no more
 asynchronous futures can be driven, it can be hard to diagnose and debug
 in production.
@@ -94,4 +106,4 @@ Another option is to use the [`tokio_metrics`](https://github.com/tokio-rs/tokio
 
 ## License
 
-MIT
+MIT or Apache 2.0
