@@ -95,6 +95,16 @@ There are a few advantages that I've seen to the internal watchdog timer approac
 * Sometimes if there are deadlocks in your system, a good way to reproduce them is to set `TOKIO_NUM_WORKERS` to 2 or 1, and
   exercise some part of your system via integration tests in CI. You may want those tests to be very simple and not involve docker etc.,
   and at that point internal liveness checking such as by this watchdog may be attractive.
+  * The other thing I like to do when smoking out these issues is, don't run your binary directly in CI, run it through `gdb`, such as:
+    `gdb -return-child-result -batch -ex run -ex thread apply all bt -ex quit --args target/release/my_bin`
+    This will make it so that your process runs with `gdb` already attached, and whenever it stops, the command `thread apply all bt` is run.
+    Then `gdb` quits and it returns the child's exit code, so CI fails if a panic occurred.
+    If the process runs this way and the watchdog panics, you will get a backtrace from every thread
+    in the program, in the logs, automatically, without having to ssh into the CI worker and attach gdb manually. These backtraces are thread backtraces, not
+    async-aware task backtraces, so they aren't as helpful or informative as the task dump -- the higher frames of the stack are likely to be unrelated to whatever
+    sequence of async calls was happening. However, the final calls of the stack frame can be very interesting -- if your thread is in `pthread_sleep`, or one of the mutex-related
+    `pthread` calls, or in a C library like `libpq`, that can help you figure out what blocking calls might be happening and narrow down where your problem might be. And you will
+    get this data even if the watchdog was unable to get a task dump.
 * The in-process heartbeat system is really very simple, whereas with http-based liveness checking, it could be failing because of a networking issue instead.
   Note that nothing stops you from using both and putting a longer timeout on the http-based check.
 * I have not experienced any false positives from this system in production or in CI testing -- the watchdog triggering has always been traced back to an actual problem.
