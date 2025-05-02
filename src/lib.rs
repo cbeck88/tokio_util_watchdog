@@ -9,6 +9,7 @@
 //! * Helper functions for obtaining runtime metrics etc. are also exposed.
 
 #![deny(missing_docs)]
+#![allow(deprecated)]
 
 use std::{
     path::Path,
