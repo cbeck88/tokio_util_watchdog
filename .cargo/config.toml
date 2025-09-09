@@ -1,0 +1,9 @@
+# We only enable tokio_taskdump on Linux targets since it's not supported on Mac
+[build]
+rustflags = ["--cfg", "tokio_unstable"]
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["--cfg", "tokio_unstable", "--cfg", "tokio_taskdump"]
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["--cfg", "tokio_unstable", "--cfg", "tokio_taskdump"]

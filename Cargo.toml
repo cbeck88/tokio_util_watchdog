@@ -20,5 +20,5 @@ keywords = [
 unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)'] }
 
 [dependencies]
-tokio = { version = "1.43.0", features = ["rt", "time"] }
+tokio = { version = "1.47.0", features = ["rt", "time"] }
 tracing = { version = "0.1" }
