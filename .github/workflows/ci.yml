@@ -38,6 +38,8 @@ jobs:
       env:
         RUSTFLAGS: ${{ matrix.RUSTFLAGS }}
       run: cargo build --verbose ${{ matrix.TARGET }}
+    - name: Check dirty git
+      uses: cbeck88/check-dirty-git@v1
 
   # lint rust
   lint:

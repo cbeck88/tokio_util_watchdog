@@ -1,6 +1,6 @@
 [package]
 name = "tokio_util_watchdog"
-version = "0.1.3"
+version = "0.2.0"
 authors = ["beck.ct@gmail.com"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -17,8 +17,8 @@ keywords = [
 ]
 
 [lints.rust]
-unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)'] }
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)', 'cfg(tokio_taskdump)'] }
 
 [dependencies]
-tokio = { version = "1.47.0", features = ["rt", "time"] }
+tokio = { version = "1.48", features = ["rt", "time", "taskdump"] }
 tracing = { version = "0.1" }
