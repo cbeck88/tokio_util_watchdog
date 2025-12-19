@@ -17,12 +17,12 @@ keywords = [
 ]
 
 [lints.rust]
-unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)', 'cfg(tokio_taskdump)'] }
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(tokio_unstable)'] }
+
+[features]
+default = ["taskdump"]
+taskdump = ["tokio/taskdump"]
 
 [dependencies]
 tokio = { version = "1.48", features = ["rt", "time"] }
 tracing = { version = "0.1" }
-
-# taskdump is only supported on linux x86/x86_64/aarch64
-[target.'cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "x86", target_arch = "aarch64")))'.dependencies]
-tokio = { version = "1.48", features = ["taskdump"] }

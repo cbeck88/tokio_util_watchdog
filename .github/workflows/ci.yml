@@ -15,11 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        RUSTFLAGS: ["--deny warnings", "--cfg tokio_unstable --deny warnings", "--cfg tokio_unstable --cfg tokio_taskdump --deny warnings"]
-        TARGET: ["", "--target wasm32-unknown-unknown"] # An arbitrary 32-bit target
-        exclude: # This doesn't work because tokio_taskdump doesn't support wasm32
-          - RUSTFLAGS: "--cfg tokio_unstable --cfg tokio_taskdump --deny warnings"
-            TARGET: "--target wasm32-unknown-unknown"
+        RUSTFLAGS: ["--deny warnings", "--cfg tokio_unstable --deny warnings"]
+        TARGET: ["", "--target wasm32-unknown-unknown"]
+        FEATURES: ["--no-default-features", ""]
+        exclude:
+          # taskdump (default) doesn't support wasm32
+          - TARGET: "--target wasm32-unknown-unknown"
+            FEATURES: ""
+          # taskdump (default) requires --cfg tokio_unstable
+          - RUSTFLAGS: "--deny warnings"
+            FEATURES: ""
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +42,7 @@ jobs:
     - name: Build Rust
       env:
         RUSTFLAGS: ${{ matrix.RUSTFLAGS }}
-      run: cargo build --verbose ${{ matrix.TARGET }}
+      run: cargo build --verbose ${{ matrix.TARGET }} ${{ matrix.FEATURES }}
     - name: Check dirty git
       uses: cbeck88/check-dirty-git@v1
 

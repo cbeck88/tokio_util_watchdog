@@ -248,7 +248,7 @@ impl Watchdog {
                     // deadlocked. If it's just slow however, then we will get this additional data.
                     // If the task dump works, then we cancel the panic.
                     // We have to run the task dump on a separate thread since the runtime may be FUBAR.
-                    #[cfg(all(tokio_unstable, tokio_taskdump))]
+                    #[cfg(feature = "taskdump")]
                     {
                         use std::sync::Condvar;
 
